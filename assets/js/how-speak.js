@@ -46,11 +46,6 @@ async function chinses2Pinyin(text) {
         console.warn(`無法存取雷雷 API`)
     }
     try {
-        return (await getZhcResult("https://api.zhconvert.org/convert"))
-    } catch (e) {
-        console.warn(`無法存取 zhconvert`)
-    }
-    try {
         return (await getZhcResult("https://cors-anywhere.herokuapp.com/https://api.zhconvert.org/convert"))
     } catch (e) {
         console.warn(`無法存取 cors-anywhere`)
