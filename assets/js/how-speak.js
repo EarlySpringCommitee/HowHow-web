@@ -68,6 +68,7 @@ async function chinses2Pinyin(text) {
     alert("很抱歉，HowHow 語音發聲器目前無法提供服務，請稍後再試")
 }
 async function speak(text) {
+    if (text == "") { return alert("請輸入文字") }
     gtag('event', 'speak', {
         'event_category': 'speak',
         'event_label': text,
