@@ -50,6 +50,11 @@ async function chinses2Pinyin(text) {
      })*/
 }
 async function speak(text) {
+    gtag('event', 'speak', {
+        'event_category': 'speak',
+        'event_label': text,
+        'value': text
+    });
     window.history.pushState({}, '', `/?text=${text}`);
     let pinyin = await chinses2Pinyin(text)
     ap.list.clear()
@@ -61,6 +66,11 @@ async function speak(text) {
             }]);
         } else {
             console.warn(`沒有這個音: ${s}`)
+            gtag('event', '沒有這個音', {
+                'event_category': '沒有這個音',
+                'event_label': s,
+                'value': s
+            });
             ap.list.add([{
                 name: s,
                 url: failVoice
