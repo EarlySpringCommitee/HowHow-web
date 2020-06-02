@@ -87,7 +87,7 @@ async function speak(text) {
             console.warn(`沒有這個音: ${s}`)
             gtag('event', '沒有這個音', {
                 'event_category': '沒有這個音',
-                'event_label': s,
+                'event_label': `${s} - ${text}`,
                 'value': s
             });
             ap.list.add([{
