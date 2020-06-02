@@ -32,7 +32,18 @@ async function chinses2Pinyin(text) {
     // 路邊撿的
     let helloacm = (await fetch(`https://helloacm.com/api/pinyin/?cached&s=${text}&t=1`).then(x => x.json())).result
 
-    return helloacm.map(x => x.indexOf(',') > 0 ? x.split(',')[0] : x)
+    return helloacm.map(x => {
+        if (x.indexOf(',') > 0) {
+            let splitedList = x.split(',')
+            for (let sp of splitedList) {
+                if (voiceList[sp]) {
+                    return sp
+                }
+            }
+            return splitedList[0]
+        }
+        else return x
+    })
 }
 async function speak(text) {
     window.history.pushState({}, '', `/?text=${text}`);
