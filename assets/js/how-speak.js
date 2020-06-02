@@ -1,7 +1,7 @@
 const ap = new APlayer({ container: document.getElementById('aplayer') });
 let voiceBaseURL = "/assets/audios/"
 let voiceList = {}
-let failVoice = voiceBaseURL + '沒有這個音.mp3'
+let failVoice
 async function fetchVoiceList() {
     if (sessionStorage['audio']) {
         voiceList = JSON.parse(sessionStorage['audio'])
@@ -18,6 +18,7 @@ async function fetchVoiceList() {
         }
         sessionStorage['audio'] = JSON.stringify(voiceList)
     }
+    failVoice = voiceList['沒有這個音']
     $("#play").removeAttr("disabled")
 
 }
