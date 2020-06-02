@@ -13,7 +13,7 @@ async function fetchVoiceList() {
             let res = await fetch(`https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/audios/${folder.name}?ref=master`).then(x => x.json())
             for (let audio of res) {
                 let { name } = audio
-                voiceList[name.replace('.mp3', '')] = voiceBaseURL + name
+                voiceList[name.replace('.mp3', '')] = voiceBaseURL + `${folder.name}/` + name
             }
         }
         sessionStorage['audio'] = JSON.stringify(voiceList)
@@ -78,7 +78,7 @@ ap.on('ended', function () {
 $(function () {
     let url = new URL(location.href);
     let text = url.searchParams.get('text');
-    if (text.length)
+    if (text)
         $("#how-text").val(text)
 });
 fetchVoiceList()
