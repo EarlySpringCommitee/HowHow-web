@@ -35,6 +35,7 @@ async function chinses2Pinyin(text) {
     return helloacm.map(x => x.indexOf(',') > 0 ? x.split(',')[0] : x)
 }
 async function speak(text) {
+    window.history.pushState({}, '', `/?text=${text}`);
     let pinyin = await chinses2Pinyin(text)
     ap.list.clear()
     for (let s of pinyin) {
@@ -58,5 +59,11 @@ $("#play").click(function () {
 })
 ap.on('ended', function () {
     ap.list.remove(0);
+});
+$(function () {
+    let url = new URL(location.href);
+    let text = url.searchParams.get('text');
+    if (text.length)
+        $("#how-text").val(text)
 });
 fetchVoiceList()
