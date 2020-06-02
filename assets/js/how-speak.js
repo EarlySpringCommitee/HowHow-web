@@ -24,7 +24,7 @@ async function fetchVoiceList() {
 }
 async function chinses2Pinyin(text) {
     // 繁化姬
-    return (await fetch("https://cors-anywhere.herokuapp.com/https://api.zhconvert.org/convert", {
+    return (await fetch("https://zhc.rextw.com/convert", {
         method: 'POST',
         body: JSON.stringify({
             converter: "Pinyin",
