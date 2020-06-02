@@ -7,10 +7,14 @@ async function fetchVoiceList() {
         voiceList = JSON.parse(sessionStorage['audio'])
     }
     else {
-        let res = await fetch('https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/audios?ref=master').then(x => x.json())
-        for (let audio of res) {
-            let { name } = audio
-            voiceList[name.replace('.mp3', '')] = voiceBaseURL + name
+        let resFolder = await fetch('https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/audios?ref=master').then(x => x.json())
+        resFolder = resFolder.filter(x => x.type == 'dir')
+        for (let folder of resFolder) {
+            let res = await fetch(`https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/audios/${folder.name}?ref=master`).then(x => x.json())
+            for (let audio of res) {
+                let { name } = audio
+                voiceList[name.replace('.mp3', '')] = voiceBaseURL + name
+            }
         }
         sessionStorage['audio'] = JSON.stringify(voiceList)
     }
