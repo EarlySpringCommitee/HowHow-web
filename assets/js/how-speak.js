@@ -23,31 +23,31 @@ async function fetchVoiceList() {
 }
 async function chinses2Pinyin(text) {
     // 繁化姬
-    /*return (await fetch("https://api.zhconvert.org/convert", {
-         method: 'POST',
-         body: JSON.stringify({
-             converter: "Pinyin",
-             text
-         }),
-         headers: new Headers({
-             'Content-Type': 'application/json'
-         })
-     }).then(x => x.json())).data.text.split(' ')*/
+    return (await fetch("https://api.zhconvert.org/convert", {
+        method: 'POST',
+        body: JSON.stringify({
+            converter: "Pinyin",
+            text
+        }),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    }).then(x => x.json())).data.text.split(' ')
     // 路邊撿的
-    let helloacm = (await fetch(`https://helloacm.com/api/pinyin/?cached&s=${text}&t=1`).then(x => x.json())).result
-
-    return helloacm.map(x => {
-        if (x.indexOf(',') > 0) {
-            let splitedList = x.split(',')
-            for (let sp of splitedList) {
-                if (voiceList[sp]) {
-                    return sp
-                }
-            }
-            return splitedList[0]
-        }
-        else return x
-    })
+    /* let helloacm = (await fetch(`https://helloacm.com/api/pinyin/?cached&s=${text}&t=1`).then(x => x.json())).result
+ 
+     return helloacm.map(x => {
+         if (x.indexOf(',') > 0) {
+             let splitedList = x.split(',')
+             for (let sp of splitedList) {
+                 if (voiceList[sp]) {
+                     return sp
+                 }
+             }
+             return splitedList[0]
+         }
+         else return x
+     })*/
 }
 async function speak(text) {
     window.history.pushState({}, '', `/?text=${text}`);
