@@ -1,10 +1,9 @@
 const ap = new APlayer({ container: document.getElementById('aplayer') });
-let voiceBaseURL = "/assets/audios/"
+const sessionStorageKey = `how_audios_${new Date().toJSON().slice(0, 10)}`
 let voiceList = {}
-let failVoice
 async function fetchVoiceList() {
-    if (sessionStorage['audio']) {
-        voiceList = JSON.parse(sessionStorage['audio'])
+    if (sessionStorage[sessionStorageKey]) {
+        voiceList = JSON.parse(sessionStorage[sessionStorageKey])
     }
     else {
         let resFolder = await fetch('https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/audios?ref=master').then(x => x.json())
@@ -13,14 +12,13 @@ async function fetchVoiceList() {
             let res = await fetch(`https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/audios/${folder.name}?ref=master`).then(x => x.json())
             for (let audio of res) {
                 let { name } = audio
-                voiceList[name.replace('.mp3', '')] = voiceBaseURL + `${folder.name}/` + name
+                voiceList[name.replace('.mp3', '')] = `/assets/audios/${folder.name}/` + name
             }
         }
-        sessionStorage['audio'] = JSON.stringify(voiceList)
+        sessionStorage[sessionStorageKey] = JSON.stringify(voiceList)
     }
-    failVoice = voiceList['沒有這個音']
     $("#play").removeAttr("disabled")
-
+    $("#play").val("播放")
 }
 async function chinses2Pinyin(text) {
     async function getZhcResult(api) {
@@ -93,7 +91,7 @@ async function speak(text) {
             });
             ap.list.add([{
                 name: s,
-                url: failVoice
+                url: voiceList['沒有這個音']
             }]);
         }
     }
