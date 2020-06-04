@@ -1,5 +1,6 @@
 const ap = new APlayer({ container: document.getElementById('aplayer') });
 const sessionStorageKey = `how_audios_${new Date().toJSON().slice(0, 10)}`
+const branch = location.hostname == 'howfun.futa.gg' ? 'master' : 'dev'
 let voiceList = {}
 async function fetchVoiceList() {
     if (sessionStorage[sessionStorageKey]) {
