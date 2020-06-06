@@ -7,8 +7,8 @@ const branch = location.hostname == 'howfun.futa.gg' ? 'master' : 'dev'
 window._voiceList = {}
 window._videoList = {}
 async function fetchList() {
-    if (sessionStorage[audioStorageKey]) {
-        _voiceList = JSON.parse(sessionStorage[audioStorageKey])
+    if (localStorage[audioStorageKey]) {
+        _voiceList = JSON.parse(localStorage[audioStorageKey])
     }
     else {
         let resFolder = await fetch('https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/audios?ref=' + branch).then(x => x.json())
@@ -20,10 +20,10 @@ async function fetchList() {
                 _voiceList[name.replace('.mp3', '')] = `/assets/audios/${folder.name}/` + name
             }
         }
-        sessionStorage[audioStorageKey] = JSON.stringify(_voiceList)
+        localStorage[audioStorageKey] = JSON.stringify(_voiceList)
     }
-    if (sessionStorage[vidioStorageKey]) {
-        _videoList = JSON.parse(sessionStorage[vidioStorageKey])
+    if (localStorage[vidioStorageKey]) {
+        _videoList = JSON.parse(localStorage[vidioStorageKey])
     }
     else {
         let resFolder = await fetch('https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/videos?ref=' + branch).then(x => x.json())
@@ -35,7 +35,7 @@ async function fetchList() {
                 _videoList[name.replace('.mp4', '')] = `/assets/videos/${folder.name}/${name}`
             }
         }
-        sessionStorage[vidioStorageKey] = JSON.stringify(_videoList)
+        localStorage[vidioStorageKey] = JSON.stringify(_videoList)
     }
     $("#play,#play-video").removeAttr("disabled")
     $("#play,#play-video").val("播放")
