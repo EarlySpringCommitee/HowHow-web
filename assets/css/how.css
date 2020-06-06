@@ -1,0 +1,30 @@
+#how-video-contianer {
+
+    width: 100%;
+    max-width: 90%;
+    height: 0;
+    padding-bottom: 47.65%;
+    box-sizing: border-box;
+    position: relative;
+    margin: 10px auto;
+    text-align: center;
+}
+
+#how-video {
+    position: absolute;
+    border-radius: 8px;
+    width: 854px;
+    border-color: #dddddd;
+    border: solid 1px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: url('/images/how-video-bg.png');
+}
+
+#how-speak,
+[href="#how-speak"] {
+    display: none !important;
+}

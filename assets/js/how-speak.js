@@ -1,72 +1,44 @@
 const ap = new APlayer({ container: document.getElementById('aplayer') });
-const sessionStorageKey = `how_audios_${new Date().toJSON().slice(0, 10)}`
+const howVideoEl = document.getElementById('how-video');
+const audioStorageKey = `how_audios_${new Date().toJSON().slice(0, 10)}`
+const vidioStorageKey = `how_vidios_${new Date().toJSON().slice(0, 10)}`
 const branch = location.hostname == 'howfun.futa.gg' ? 'master' : 'dev'
-let voiceList = {}
-async function fetchVoiceList() {
-    if (sessionStorage[sessionStorageKey]) {
-        voiceList = JSON.parse(sessionStorage[sessionStorageKey])
+window._voiceList = {}
+window._videoList = {}
+async function fetchList() {
+    if (sessionStorage[audioStorageKey]) {
+        _voiceList = JSON.parse(sessionStorage[audioStorageKey])
     }
     else {
-        let resFolder = await fetch('https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/audios?ref=master').then(x => x.json())
+        let resFolder = await fetch('https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/audios?ref=' + branch).then(x => x.json())
         resFolder = resFolder.filter(x => x.type == 'dir')
         for (let folder of resFolder) {
-            let res = await fetch(`https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/audios/${folder.name}?ref=master`).then(x => x.json())
+            let res = await fetch(`https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/audios/${folder.name}?ref=${branch}`).then(x => x.json())
             for (let audio of res) {
                 let { name } = audio
-                voiceList[name.replace('.mp3', '')] = `/assets/audios/${folder.name}/` + name
+                _voiceList[name.replace('.mp3', '')] = `/assets/audios/${folder.name}/` + name
             }
         }
-        sessionStorage[sessionStorageKey] = JSON.stringify(voiceList)
+        sessionStorage[audioStorageKey] = JSON.stringify(_voiceList)
     }
-    $("#play").removeAttr("disabled")
-    $("#play").val("播放")
-}
-async function chinses2Pinyin(text) {
-    async function getZhcResult(api) {
-        return (await fetch(api, {
-            method: 'POST',
-            body: JSON.stringify({
-                converter: "Pinyin",
-                text
-            }),
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            })
-        }).then(x => x.json())).data.text.split(' ')
+    if (sessionStorage[vidioStorageKey]) {
+        _videoList = JSON.parse(sessionStorage[vidioStorageKey])
     }
-    try {
-        return (await getZhcResult("https://zhc.gnehs.workers.dev/?https://api.zhconvert.org/convert"))
-    } catch (e) {
-        console.warn(`無法存取 gnehs API`)
-    }
-    try {
-        return (await getZhcResult("https://zhc.rextw.com/convert"))
-    } catch (e) {
-        console.warn(`無法存取雷雷 API`)
-    }
-    try {
-        return (await getZhcResult("https://cors-anywhere.herokuapp.com/https://api.zhconvert.org/convert"))
-    } catch (e) {
-        console.warn(`無法存取 cors-anywhere`)
-    }
-    try {
-        let helloacm = (await fetch(`https://helloacm.com/api/pinyin/?cached&s=${text}&t=1`).then(x => x.json())).result
-        return helloacm.map(x => {
-            if (x.indexOf(',') > 0) {
-                let splitedList = x.split(',')
-                for (let sp of splitedList) {
-                    if (voiceList[sp]) {
-                        return sp
-                    }
-                }
-                return splitedList[0]
+    else {
+        let resFolder = await fetch('https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/videos?ref=' + branch).then(x => x.json())
+        resFolder = resFolder.filter(x => x.type == 'dir')
+        for (let folder of resFolder) {
+            let res = await fetch(`https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/videos/${folder.name}?ref=${branch}`).then(x => x.json())
+            for (let video of res) {
+                let { name } = video
+                _videoList[name.replace('.mp4', '')] = `/assets/videos/${folder.name}/${name}`
             }
-            else return x
-        })
-    } catch (e) {
-        console.warn(`無法存取 helloacm 拼音轉換`)
+        }
+        sessionStorage[vidioStorageKey] = JSON.stringify(_videoList)
     }
-    alert("很抱歉，HowHow 語音發聲器目前無法提供服務，請稍後再試")
+    $("#play,#play-video").removeAttr("disabled")
+    $("#play,#play-video").val("播放")
+    howVideoEl.src = _videoList['＿＿']
 }
 async function speak(text) {
     if (text == "") { return alert("請輸入文字") }
@@ -79,10 +51,10 @@ async function speak(text) {
     let pinyin = await chinses2Pinyin(text)
     ap.list.clear()
     for (let s of pinyin) {
-        if (voiceList[s]) {
+        if (_voiceList[s]) {
             ap.list.add([{
                 name: s,
-                url: voiceList[s]
+                url: _voiceList[s]
             }]);
         } else {
             console.warn(`沒有這個音: ${s}`)
@@ -93,14 +65,75 @@ async function speak(text) {
             });
             ap.list.add([{
                 name: s,
-                url: voiceList['沒有這個音']
+                url: _voiceList['沒有這個音']
             }]);
         }
     }
     ap.play()
 }
+window._how_vlist = []
+window._how_vlist_active = 0
+async function speakVideo(text) {
+    if (text == "") { return alert("請輸入文字") }
+    gtag('event', 'speak-v', {
+        'event_category': 'speak-v',
+        'event_label': text,
+        'value': text
+    });
+    window.history.pushState({}, '', `/?text=${text}`);
+    let pinyin = await chinses2Pinyin(text)
+    _how_vlist = []
+    _how_vlist_active = 0
+    let videoLoader = v => {
+        let headID = document.getElementsByTagName('head')[0];
+        let link = document.createElement('link');
+        link.as = 'video';
+        link.rel = 'preload'
+        link.href = v
+        headID.appendChild(link);
+    };
+
+    for (let s of pinyin) {
+        let pushVideo = v => {
+            videoLoader(v)
+            _how_vlist.push({
+                v,
+                played: false
+            })
+        }
+        if (_videoList[s]) {
+            pushVideo(_videoList[s])
+        } else {
+            console.warn(`沒有這個音: ${s}`)
+            gtag('event', '沒有這個音', {
+                'event_category': '沒有這個音',
+                'event_label': `${s} - ${text}`,
+                'value': s
+            });
+            pushVideo(_videoList['沒有這個音'])
+
+        }
+    }
+    howVideoEl.src = _how_vlist[0].v
+    howVideoEl.play();
+    howVideoEl.addEventListener('playing', function (e) {
+        _how_vlist[_how_vlist_active].played = true
+    })
+    howVideoEl.addEventListener('ended', function (e) {
+        if (_how_vlist[_how_vlist_active] && _how_vlist[_how_vlist_active].played) {
+            _how_vlist_active++
+            if (_how_vlist.length > _how_vlist_active) {
+                howVideoEl.src = _how_vlist[_how_vlist_active].v;
+                howVideoEl.play();
+            }
+        }
+    });
+}
 $("#play").click(function () {
     speak($("#how-text").val())
+})
+$("#play-video").click(function () {
+    speakVideo($("#how-text-video").val())
 })
 ap.on('ended', function () {
     ap.list.remove(0);
@@ -108,7 +141,9 @@ ap.on('ended', function () {
 $(function () {
     let url = new URL(location.href);
     let text = url.searchParams.get('text');
-    if (text)
+    if (text) {
         $("#how-text").val(text)
+        $("#how-text-video").val(text)
+    }
 });
-fetchVoiceList()
+fetchList()
