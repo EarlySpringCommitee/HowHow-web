@@ -52,12 +52,13 @@
 			<!-- Nav -->
 			<nav id="nav">
 				<ul>
-					<li><a href="#how-speak-video" class="active">How 發聲器</a></li>
-					<li><a href="#how-speak">How 語音發聲器</a></li>
-					<li><a href="#utau">UTAU 聲庫</a></li>
-					<li><a href="#download">發音集</a></li>
-					<li><a href="#about">關於</a></li>
-					<li><a href="#contributor">貢獻者</a></li>
+					<li><a href="#how-speak-video" class="active"><span class="icon solid fa-play-circle"></span> How
+							發聲器</a></li>
+					<!--<li><a href="#how-speak">How 語音發聲器</a></li>-->
+					<li><a href="#utau"><span class="icon solid fa-music"></span> UTAU 聲庫</a></li>
+					<li><a href="#download"><span class="icon solid fa-microphone"></span> 發音集</a></li>
+					<li><a href="#about"><span class="icon solid fa-info"></span> 關於</a></li>
+					<li><a href="#contributor"><span class="icon solid fa-code"></span> 貢獻者</a></li>
 				</ul>
 			</nav>
 
@@ -69,7 +70,6 @@
 					<div class="spotlight">
 						<div class="content">
 							<div id="how-video-contianer">
-
 								<video id="how-video"> </video>
 							</div>
 							<header class="major">
@@ -86,108 +86,113 @@
 										<li><input type="button" id="play-video" value="讀取中..." disabled
 												   class="primary" />
 										</li>
+										<li><select id="play-speed">
+												<option value="1">速度調整</option>
+												<option value="0.5">0.5x</option>
+												<option value="1">1x</option>
+												<option value="1.5">1.5x</option>
+												<option value="2">2x</option>
+												<option value="2.5">2.5x</option>
+												<option value="3">3x</option>
+											</select>
+										</li>
 									</ul>
 								</div>
 							</div>
 							<p><br />本服務使用了 <a href="http://zhconvert.org/" target="_blank">繁化姬</a> 的 API 服務</p>
 						</div>
 					</div>
-					<section id="how-speak" class="main">
-						<div class="spotlight">
-							<div class="content">
-								<header class="major">
-									<h2>How 語音發聲器</h2>
-								</header>
-								<p>輸入文字後按下播放，即可讓 How 哥唸出這些字（限中文且不可使用標點符號）</p>
-								<div class="row gtr-uniform">
-									<div class="col-12">
-										<textarea name="how-text" id="how-text" placeholder="輸入您想讓 How 哥念的字"
-												  rows="2"></textarea>
-									</div>
-									<div class="col-12">
-										<ul class="actions">
-											<li><input type="button" id="play" value="讀取中..." disabled
-													   class="primary" />
-											</li>
-										</ul>
-									</div>
+				</section>
+				<section id="how-speak" class="main">
+					<div class="spotlight">
+						<div class="content">
+							<header class="major">
+								<h2>How 語音發聲器</h2>
+							</header>
+							<p>輸入文字後按下播放，即可讓 How 哥唸出這些字（限中文且不可使用標點符號）</p>
+							<div class="row gtr-uniform">
+								<div class="col-12">
+									<textarea name="how-text" id="how-text" placeholder="輸入您想讓 How 哥念的字"
+											  rows="2"></textarea>
 								</div>
-								<p><br />本服務使用了 <a href="http://zhconvert.org/" target="_blank">繁化姬</a> 的 API 服務</p>
+								<div class="col-12">
+									<ul class="actions">
+										<li><input type="button" id="play" value="讀取中..." disabled class="primary" />
+										</li>
+									</ul>
+								</div>
 							</div>
+							<p><br />本服務使用了 <a href="http://zhconvert.org/" target="_blank">繁化姬</a> 的 API 服務</p>
 						</div>
-					</section>
+					</div>
+				</section>
 
-					<!-- First Section -->
-					<section id="utau" class="main">
-						<header class="major">
-							<h2>How 哥 UTAU 聲庫</h2>
-							<p>唱出你心中所思</p>
-						</header>
-						<footer class="major">
-							<ul class="actions">
-								<!--<li><a href="#" class="button primary">絕讚製作中...</a></li>-->
-								<li><input disabled type="submit" value="絕讚製作中..." class="primary" /></li>
-							</ul>
-						</footer>
-					</section>
-
-					<!-- First Section -->
-					<section id="download" class="main">
-						<header class="major">
-							<h2>發音集</h2>
-							<p>你可以在上頭的發音器試用，或是在此下載已經整理成拼音的發音集！</p>
-						</header>
-						<footer class="major">
-							<ul class="actions">
-								<li>
-									<a href="https://github.com/EarlySpringCommitee/HowHow-parser/archive/master.zip"
-									   target="_blank" class="button primary">下載</a>
-								</li>
-								<li>
-									<a href="https://github.com/EarlySpringCommitee/HowHow-parser" target="_blank"
-									   class="button ">發音集 GitHub</a>
-								</li>
-							</ul>
-						</footer>
-					</section>
-
-					<!-- Second Section -->
-					<section id="about" class="main">
-						<header class="major">
-							<h2>關於</h2>
-							<p>我們是一群學生，因為吃飽太閒便製作了這個網站，若有任何問題或建議可至 <a
-								   href="https://github.com/EarlySpringCommitee/HowHow-web" target="_blank">GitHub</a>
-								提出 <a href="https://github.com/EarlySpringCommitee/HowHow-web/issues/new"
-								   target="_blank">Issue</a>。</p>
-						</header>
-						<footer class="major">
-							<ul class="actions">
-								<li><a href="https://github.com/EarlySpringCommitee/HowHow-web" class="button primary"
-									   target="_blank">GitHub</a></li>
-							</ul>
-						</footer>
-					</section>
-
-					<!-- Get Started -->
-					<section id="contributor" class="main">
-						<header class="major">
-							<h2>貢獻者</h2>
-						</header>
-						<ul>
-							<li><a href="https://gnehs.net/" target="_blank">勝勝</a></li>
-							<li><a href="https://koru.me/" target="_blank">koru</a></li>
-							<li><a href="https://tdccc.com.tw" target="_blank">踢低吸</a></li>
-							<li><a href="https://sciuridae.me" target="_blank">Sciuridae</a></li>
-							<li><a href="https://github.com/bill96012" target="_blank">Bill</a></li>
-							<li><a href="https://t510599.github.io/" target="_blank">石頭</a></li>
+				<!-- First Section -->
+				<section id="utau" class="main">
+					<header class="major">
+						<h2>How 哥 UTAU 聲庫（製作中）</h2>
+						<p>唱出你心中所思</p>
+					</header>
+					<footer class="major">
+						<ul class="actions">
+							<!--<li><a href="#" class="button primary">絕讚製作中...</a></li>-->
+							<li><input disabled type="submit" value="絕讚製作中..." class="primary" /></li>
 						</ul>
-						<footer class="major">
-							<ul class="actions">
-								<li><a href="https://github.com/EarlySpringCommitee/HowHow-web/graphs/contributors"
-									   target="_blank" class="primary button">到 GitHub 看看其他貢獻者</a></li>
-							</ul>
-						</footer>
-					</section>
+					</footer>
+				</section>
+
+				<!-- First Section -->
+				<section id="download" class="main">
+					<header class="major">
+						<h2>發音集</h2>
+						<p>在此下載已經切割並以拼音命名完成的發音集！</p>
+						<p>聲音為 MP3 檔案，影片則是 480P，若需更高解析度需自行處理。</p>
+					</header>
+					<footer class="major">
+						<ul class="actions">
+							<li>
+								<a href="https://github.com/EarlySpringCommitee/HowHow-parser/archive/master.zip"
+								   target="_blank" class="button primary">下載</a>
+							</li>
+							<li>
+								<a href="https://github.com/EarlySpringCommitee/HowHow-parser" target="_blank"
+								   class="button ">發音集 GitHub</a>
+							</li>
+						</ul>
+					</footer>
+				</section>
+
+				<!-- Second Section -->
+				<section id="about" class="main">
+					<header class="major">
+						<h2>關於</h2>
+						<p>我們是一群學生，因為吃飽太閒便製作了這個網站，若有任何問題或建議可至發聲器的 <a
+							   href="https://github.com/EarlySpringCommitee/HowHow-web" target="_blank">GitHub</a>
+							提出 <a href="https://github.com/EarlySpringCommitee/HowHow-web/issues/new"
+							   target="_blank">Issue</a>。</p>
+					</header>
+				</section>
+
+				<!-- Get Started -->
+				<section id="contributor" class="main">
+					<header class="major">
+						<h2>貢獻者</h2>
+					</header>
+					<ul>
+						<li><a href="https://gnehs.net/" target="_blank">勝勝</a></li>
+						<li><a href="https://koru.me/" target="_blank">koru</a></li>
+						<li><a href="https://tdccc.com.tw" target="_blank">踢低吸</a></li>
+						<li><a href="https://sciuridae.me" target="_blank">Sciuridae</a></li>
+						<li><a href="https://github.com/bill96012" target="_blank">Bill</a></li>
+						<li><a href="https://t510599.github.io/" target="_blank">石頭</a></li>
+					</ul>
+					<footer class="major">
+						<ul class="actions">
+							<li><a href="https://github.com/EarlySpringCommitee/HowHow-web/graphs/contributors"
+								   target="_blank" class="primary button">到 GitHub 看看其他貢獻者</a></li>
+						</ul>
+					</footer>
+				</section>
 
 			</div>
 
@@ -200,9 +205,15 @@
 				<section>
 					<h2>始春延期委員會</h2>
 					<dl class="alt">
-						<dt>GitHub</dt>
+						<dt>發聲器</dt>
+						<dd><a href="https://git.io/howhowweb"
+							   target="_blank">github.com/EarlySpringCommitee/HowHow-web</a></dd>
+						<dt>發音集</dt>
+						<dd><a href="https://github.com/EarlySpringCommitee/HowHow-parser"
+							   target="_blank">github.com/EarlySpringCommitee/HowHow-parser</a></dd>
+						<dt>始春 GitHub</dt>
 						<dd><a href="https://github.com/EarlySpringCommitee"
-							   target="_blank">https://github.com/EarlySpringCommitee</a></dd>
+							   target="_blank">github.com/EarlySpringCommitee</a></dd>
 					</dl>
 				</section>
 				<p class="copyright">網站設計基於 <a href="https://html5up.net">HTML5 UP</a> 提供的範本</p>
@@ -220,7 +231,7 @@
 		<script src="assets/js/main.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script>
 		<script src="assets/js/how-utils.js"></script>
-		<script src="assets/js/how-speak.js?ls"></script>
+		<script src="assets/js/how-speak.js?sr"></script>
 		<!-- Global site tag (gtag.js) - Google Analytics -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-46944346-12"></script>
 		<script>

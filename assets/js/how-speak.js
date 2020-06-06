@@ -120,6 +120,7 @@ async function speakVideo(text) {
 
     if (!'MediaSource' in window || !MediaSource.isTypeSupported(mimeCodec)) {
         howVideoEl.src = _how_vlist[0].v
+        howVideoEl.playbackRate = parseFloat($("select#play-speed").val())
         howVideoEl.play();
         howVideoEl.addEventListener('playing', function (e) {
             _how_vlist[_how_vlist_active].played = true
@@ -129,6 +130,7 @@ async function speakVideo(text) {
                 _how_vlist_active++
                 if (_how_vlist.length > _how_vlist_active) {
                     howVideoEl.src = _how_vlist[_how_vlist_active].v;
+                    howVideoEl.playbackRate = parseFloat($("select#play-speed").val())
                     howVideoEl.play();
                 }
             }
@@ -156,6 +158,7 @@ async function speakVideo(text) {
             console.log(media);
             mediaSource.addEventListener("sourceopen", sourceOpen);
             video.src = URL.createObjectURL(mediaSource)
+            howVideoEl.playbackRate = parseFloat($("select#play-speed").val())
             video.play()
             async function sourceOpen(event) {
                 if (MediaSource.isTypeSupported(mimeCodec)) {

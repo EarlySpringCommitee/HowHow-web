@@ -9,20 +9,21 @@
 }
 
 #how-video {
-    position: absolute;
     border-radius: 8px;
     width: 100%;
-    border-color: #dddddd;
-    border: solid 1px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    display: block;
     background: url('/images/how-loading.gif');
     background-size: cover;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
 }
+
 
 #how-speak,
 [href="#how-speak"] {
     display: none !important;
+}
+
+#nav.alt {
+    backdrop-filter: blur(10px);
+    background-color: rgba(247, 247, 247, 0.8);
 }
