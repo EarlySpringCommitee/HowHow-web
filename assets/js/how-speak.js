@@ -82,6 +82,7 @@ async function speakVideo(text) {
         'value': text
     });
     window.history.pushState({}, '', `/?text=${text}`);
+    howVideoEl.src = ""
     let pinyin = await chinses2Pinyin(text)
     _how_vlist = []
     _how_vlist_active = 0
