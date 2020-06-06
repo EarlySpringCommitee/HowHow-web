@@ -1,9 +1,9 @@
 #how-video-contianer {
 
     width: 100%;
-    max-width: 90%;
+    max-width: 854px;
     height: 0;
-    padding-bottom: 47.65%;
+    padding-bottom: 39.65%;
     box-sizing: border-box;
     position: relative;
     margin: 10px auto;
@@ -13,15 +13,15 @@
 #how-video {
     position: absolute;
     border-radius: 8px;
-    width: 854px;
+    width: 100%;
     border-color: #dddddd;
     border: solid 1px;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 100%;
     background: url('/images/how-video-bg.png');
+    background-size: cover;
 }
 
 #how-speak,
