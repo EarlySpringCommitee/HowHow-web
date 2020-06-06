@@ -2,6 +2,7 @@ const ap = new APlayer({ container: document.getElementById('aplayer') });
 const howVideoEl = document.getElementById('how-video');
 const audioStorageKey = `how_audios_${new Date().toJSON().slice(0, 10)}`
 const vidioStorageKey = `how_vidios_${new Date().toJSON().slice(0, 10)}`
+const mimeCodec = "video/mp4; codecs=avc1.64001F, mp4a.40.2";
 const branch = location.hostname == 'howfun.futa.gg' ? 'master' : 'dev'
 window._voiceList = {}
 window._videoList = {}
@@ -115,7 +116,8 @@ async function speakVideo(text) {
 
         }
     }
-    if (!'MediaSource' in window) {
+
+    if (!'MediaSource' in window || !MediaSource.isTypeSupported(mimeCodec)) {
         howVideoEl.src = _how_vlist[0].v
         howVideoEl.play();
         howVideoEl.addEventListener('playing', function (e) {
@@ -132,31 +134,11 @@ async function speakVideo(text) {
         });
     } else {
         (async () => {
-
-
             const mediaSource = new MediaSource();
-
             const video = howVideoEl
-
-            // video.oncanplay = e => video.play();
-
-            const urls = JSON.parse(JSON.stringify(_how_vlist)).map(x => x.v).map(x => x.replace('/videos', '/webm').replace('mp4', 'webm'))
-
-            const request = url => fetch(url).then(response => response.arrayBuffer());
-
-            // `urls.reverse()` stops at `.currentTime` : `9`
+            const urls = JSON.parse(JSON.stringify(_how_vlist)).map(x => x.v)
+            const request = url => fetch(url).then(response => response.arrayBuffer())
             const files = await Promise.all(urls.map(request));
-
-            /*
-             `.webm` files
-             Uncaught DOMException: Failed to execute 'appendBuffer' on 'SourceBuffer': This SourceBuffer has been removed from the parent media source.
-             Uncaught DOMException: Failed to set the 'timestampOffset' property on 'SourceBuffer': This SourceBuffer has been removed from the parent media source.
-            */
-            // const mimeCodec = "video/webm; codecs=opus";
-            // https://stackoverflow.com/questions/14108536/how-do-i-append-two-video-files-data-to-a-source-buffer-using-media-source-api/
-            const mimeCodec = "video/mp4; codecs=avc1.64001F, mp4a.40.2";
-
-
             const media = await Promise.all(files.map(file => {
                 return new Promise(resolve => {
                     let media = document.createElement("video");
@@ -170,18 +152,13 @@ async function speakVideo(text) {
                     media.src = blobURL;
                 })
             }));
-
             console.log(media);
-
             mediaSource.addEventListener("sourceopen", sourceOpen);
-
-            video.src = URL.createObjectURL(mediaSource);
-
+            video.src = URL.createObjectURL(mediaSource)
+            video.play()
             async function sourceOpen(event) {
-
                 if (MediaSource.isTypeSupported(mimeCodec)) {
                     const sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
-
                     for (let chunk of media) {
                         await new Promise(resolve => {
                             sourceBuffer.appendBuffer(chunk.mediaBuffer);
@@ -192,17 +169,13 @@ async function speakVideo(text) {
                                 resolve()
                             }
                         })
-
                     }
-
                     mediaSource.endOfStream();
-
                 }
                 else {
                     console.warn(mimeCodec + " not supported");
                 }
             };
-
         })()
     }
 }
