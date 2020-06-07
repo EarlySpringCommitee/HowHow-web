@@ -140,7 +140,7 @@ async function speakVideo(text) {
             const mediaSource = new MediaSource();
             const video = howVideoEl
             const urls = JSON.parse(JSON.stringify(_how_vlist)).map(x => x.v)
-            const request = url => fetch(url).then(response => response.arrayBuffer())
+            const request = url => fetch(url, { cache: 'force-cache' }).then(response => response.arrayBuffer())
             const files = await Promise.all(urls.map(request));
             const media = await Promise.all(files.map(file => {
                 return new Promise(resolve => {
