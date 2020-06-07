@@ -1,27 +1,9 @@
-const ap = new APlayer({ container: document.getElementById('aplayer') });
 const howVideoEl = document.getElementById('how-video');
-const audioStorageKey = `how_audios_${new Date().toJSON().slice(0, 10)}`
 const vidioStorageKey = `how_vidios_${new Date().toJSON().slice(0, 10)}`
 const mimeCodec = "video/mp4; codecs=avc1.64001F, mp4a.40.2";
 const branch = location.hostname == 'howfun.futa.gg' ? 'master' : 'dev'
-window._voiceList = {}
 window._videoList = {}
 async function fetchList() {
-    if (localStorage[audioStorageKey]) {
-        _voiceList = JSON.parse(localStorage[audioStorageKey])
-    }
-    else {
-        let resFolder = await fetch('https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/audios?ref=' + branch).then(x => x.json())
-        resFolder = resFolder.filter(x => x.type == 'dir')
-        for (let folder of resFolder) {
-            let res = await fetch(`https://api.github.com/repos/EarlySpringCommitee/HowHow-web/contents/assets/audios/${folder.name}?ref=${branch}`).then(x => x.json())
-            for (let audio of res) {
-                let { name } = audio
-                _voiceList[name.replace('.mp3', '')] = `/assets/audios/${folder.name}/` + name
-            }
-        }
-        localStorage[audioStorageKey] = JSON.stringify(_voiceList)
-    }
     if (localStorage[vidioStorageKey]) {
         _videoList = JSON.parse(localStorage[vidioStorageKey])
     }
@@ -41,40 +23,9 @@ async function fetchList() {
     $("#play,#play-video").val("播放")
     howVideoEl.src = _videoList['＿＿']
 }
-async function speak(text) {
-    if (text == "") { return alert("請輸入文字") }
-    gtag('event', 'speak', {
-        'event_category': 'speak',
-        'event_label': text,
-        'value': text
-    });
-    window.history.pushState({}, '', `/?text=${text}`);
-    let pinyin = await chinses2Pinyin(text)
-    ap.list.clear()
-    for (let s of pinyin) {
-        if (_voiceList[s]) {
-            ap.list.add([{
-                name: s,
-                url: _voiceList[s]
-            }]);
-        } else {
-            console.warn(`沒有這個音: ${s}`)
-            gtag('event', '沒有這個音', {
-                'event_category': '沒有這個音',
-                'event_label': `${s} - ${text}`,
-                'value': s
-            });
-            ap.list.add([{
-                name: s,
-                url: _voiceList['沒有這個音']
-            }]);
-        }
-    }
-    ap.play()
-}
 window._how_vlist = []
 window._how_vlist_active = 0
-async function speakVideo(text) {
+async function speak(text) {
     if (text == "") { return alert("請輸入文字") }
     gtag('event', 'speak-v', {
         'event_category': 'speak-v',
@@ -183,20 +134,13 @@ async function speakVideo(text) {
         })()
     }
 }
-$("#play").click(function () {
-    speak($("#how-text").val())
-})
 $("#play-video").click(function () {
-    speakVideo($("#how-text-video").val())
+    speak($("#how-text-video").val())
 })
-ap.on('ended', function () {
-    ap.list.remove(0);
-});
 $(function () {
     let url = new URL(location.href);
     let text = url.searchParams.get('text');
     if (text) {
-        $("#how-text").val(text)
         $("#how-text-video").val(text)
     }
 });
